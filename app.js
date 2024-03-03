@@ -45,6 +45,7 @@ app.post('/register', async (req, res) => {
     await newUser.save();
     res.status(201).send("Inscription réussie");
   } catch (err) {
+   
     res.status(500).send({ message: err.message });
   }
 });
@@ -66,20 +67,11 @@ app.post("/login", async (req, res) => {
     res.status(200).send("Connecté avec succès");
   } catch (err) {
     res.status(500).send({ message: err.message });
-  }
-});
-app.post("/login/id", async (req, res) => {
-  try {
-    const { userId } = req.body;
-    // Trouver l'utilisateur dans la base de données par son ID
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(400).json({ message: "ID utilisateur incorrect" });
-    }
-    // Si l'utilisateur est trouvé, renvoyer un message de connexion réussie
-    res.status(200).json({ message: "Connecté avec succès" });
-  } catch (err) {
-    res.status(500).json({ message: "Une erreur est survenue lors de la connexion" });
+
+
+
+
+
   }
 });
 

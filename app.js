@@ -14,6 +14,7 @@ mongoose.connect("mongodb://localhost:27017/mydatabase", { useNewUrlParser: true
 const userSchema = new mongoose.Schema({
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    idPulse: { type: String, required: true, unique: true },
     dateOfBirth: { type: Date, required: true },
     bloodType: { type: String, required: true },
     wilaya: { type: String, required: true },
@@ -27,7 +28,7 @@ app.use(express.json());
 
 app.post('/register', async (req, res) => {
   try {
-    const { fullName, email, dateOfBirth, bloodType, wilaya, password, confirmPassword } = req.body;
+    const { idPulse,fullName, email, dateOfBirth, bloodType, wilaya, password, confirmPassword } = req.body;
     // Vérifier si le mot de passe et le mot de passe de confirmation sont identiques
     if (password !== confirmPassword) {
       return res.status(400).send("Les mots de passe ne correspondent pas");

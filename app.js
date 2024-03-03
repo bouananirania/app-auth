@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     dateOfBirth: { type: Date, required: true },
     bloodType: { type: String, required: true },
     wilaya: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    confirmPassword:{ type: String, required: true }
 });
 
 // Création d'un modèle utilisateur à partir du schéma

@@ -41,8 +41,9 @@ app.post('/register', async (req, res) => {
     }
     // Hacher le mot de passe avant de l'enregistrer
     const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedconfirmPassword = await bcrypt.hash(confirmPassword, 10);
     // Créer un nouvel utilisateur avec Mongoose
-    const newUser = new User({ fullName, email, dateOfBirth, bloodType, wilaya, password: hashedPassword });
+    const newUser = new User({ fullName, email, dateOfBirth, bloodType, wilaya, password: hashedPassword ,confirmPassword:hashedconfirmPassword});
     await newUser.save();
     res.status(201).send("Inscription réussie");
   } catch (err) {

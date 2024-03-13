@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT|| 3000 ;
 
 // Connexion à la base de données MongoDB
 mongoose.connect("mongodb+srv://patients:patients@patients.5m4b6xi.mongodb.net/patients", { useNewUrlParser: true, useUnifiedTopology: true })

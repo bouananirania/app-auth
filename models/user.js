@@ -1,32 +1,26 @@
-
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-
+const mongoose = require('mongoose');
+const {patientDB} =require('../config/db');
 const userSchema = new mongoose.Schema({
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     idPulse: { type: String, required: true, unique: true },
-    dateOfBirth: { type: Date, required: true },
+    age: { type: Number, required: true },
+    PhoneNumber:{ type: Number, required: true },
     bloodType: { type: String, required: true },
     wilaya: { type: String, required: true },
     password: { type: String, required: true },
-    confirmPassword: { type: String, required: true }
+    confirmPassword:{ type: String, required: true },
+    details: { type: String },
+    maladie : { type: String, required: true },
+    gender :  { type: String, required: true },
+    idDoctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
+    createdat: {
+        type: Date,
+        default: Date.now 
+     }
+    
 });
 
-userSchema.pre('save', async function (next) {
-    const user = this;
-    if (!user.isModified('password')) return next();
-
-    try {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-        user.password = hashedPassword;
-        user.confirmPassword = hashedPassword;
-        next();
-    } catch (error) {
-        return next(error);
-    }
-});
-
-const User = mongoose.model("User", userSchema);
+const User = patientDB.model('User', userSchema);
 
 module.exports = User;

@@ -9,3 +9,4 @@ patientDB.on('error', (err) => {
   console.error("Erreur de connexion à la base de données des patients :", err);
 });
 
+module.exports = {patientDB};

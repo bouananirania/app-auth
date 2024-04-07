@@ -1,9 +1,10 @@
-const User = require('./userModel');
+const User = require('../models/user');
 const bcrypt = require("bcrypt");
+const User = require("../models/user");
 
 exports.registerUser = async (req, res) => {
     try {
-        const { fullName, email, idPulse, dateOfBirth, bloodType, wilaya, password, confirmPassword } = req.body;
+        const { fullName, email, idPulse, age, bloodType, wilaya, password, confirmPassword } = req.body;
         
         if (password !== confirmPassword) {
             return res.status(400).send("Les mots de passe ne correspondent pas");
@@ -13,8 +14,9 @@ exports.registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).send("L'utilisateur existe déjà");
         }
-        
-        const newUser = new User({ fullName, email, idPulse, dateOfBirth, bloodType, wilaya, password, confirmPassword });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedconfirmPassword = await bcrypt.hash(confirmPassword, 10);
+        const newUser = new User({ fullName, email, idPulse, dateOfBirth, bloodType, wilaya, hashedPassword, hashedconfirmPassword });
         await newUser.save();
         res.status(201).send("Inscription réussie");
     } catch (err) {
@@ -41,3 +43,36 @@ exports.loginUser = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+exports.getuserdata=async(req,res)=>{
+    try {
+    const {userId}=req.params.userId;
+    /*if (!userId) {
+        return res.status(400).json({ status: false, message: "L'identifiant de l'utilisateur est manquant dans la requête." });
+    }
+    */
+    const userData = await userserv.getdata(userId); 
+    res.json({ status: true, success: userData });
+      } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: false, message: "Une erreur s'est produite lors de la récupération des données de l'utilisateur." });
+  }};
+  exports.updateUser = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const updatedUserData = req.body;
+      const updatedUser = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
+      if (!updatedUser) {
+          // Si l'utilisateur n'est pas trouvé, renvoyer une réponse 404
+          return res.status(404).json({ success: false, message: 'Utilisateur non trouvé' });
+        }
+    
+        // Renvoyer l'utilisateur mis à jour en réponse
+        res.json({ success: true, user: updatedUser });
+      } catch (err) {
+        // Gérer les erreurs
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Erreur lors de la mise à jour de l\'utilisateur' });
+      }
+    };
+  

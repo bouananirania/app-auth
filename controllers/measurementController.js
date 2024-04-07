@@ -1,55 +1,47 @@
-const { notifier } = require('../config/notification'); // Assuming you have a notifier configured
 
-// Listen for socket connections
-io.on("connection", (socket) => {
-  console.log("Client connected");
+const User = require('../models/user');
+const userserv =require('../services/usersrvc');
+const { patientDB } = require('../config/db');
+const notifier = require('node-notifier');
 
-  // Listen for BPM data from Arduino
-  socket.on("bpmData", (data) => {
-    // Forward BPM data to all connected clients
-    io.emit("bpmData", data);
-
-
-    // Check and send notifications if necessary for the specified user
-    if (data.userId === "user_id") {
-        checkAndSendNotification(data.bpm);
+exports.sendLatestBpmToClient = async (io) => {
+   io.on('connection', (socket) => {
+    console.log('Client connecté');
+     socket.on('arduinoData', async (data) => {
+      try {
+        const { idPulse, latestBpm } = data;
+        io.emit(`latestBpmData_${idPulse} : `,latestBpm );
+        console.log(`Dernières valeurs BPM du capteur ${idPulse} envoyées au client :`, latestBpm);
+        await checkAndSendNotifications(idPulse, latestBpm);
+      } catch (err) {
+        console.error('Erreur lors de la gestion des données Arduino :', err);
       }
-  
+    });
   });
-
-  // Listen for disconnection
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
-
-// Function to check and send notifications if necessary for a specified user
-const checkAndSendNotifications = (userId, bpm) => {
-  if (bpm < 60 || bpm > 100) {
-    try {
-      // Retrieve user data from your database if necessary
-      // const user = await User.findById(userId).lean();
-      
-      // Send a notification if BPM is abnormal for the specified user
-      sendNotification(`Abnormal heart rate alert for user ${userId}: ${bpm}`);
-    } catch (err) {
-      console.error('Error checking and sending notifications:', err);
-    }
-  }
 };
 
-// Function to send a notification
+
+const checkAndSendNotifications = async (idPulse, bpm) => {
+    if (bpm < 60 || bpm > 100) {
+        try {
+            const userData = await userserv.findUserByIdPulse(idPulse);
+
+            if (userData) {
+                const { fullName, userId } = userData;
+                sendNotification(`Alerte de fréquence cardiaque anormale pour l'utilisateur ${fullName} (ID: ${userId}) : ${bpm}`);
+            } else {
+                console.log("Aucun utilisateur trouvé avec l'idPulse spécifié.");
+            }
+  } catch (err) {
+    console.error('Erreur lors de la vérification et de l\'envoi de notifications :', err);
+  }}
+};
+
 const sendNotification = (message) => {
-  notifier.notify({
-    title: 'Heart Rate Alert',
-    message: message,
-    sound: true,
-    wait: true
-  });
-};
-
-// Start the server on a port
-const port = process.env.PORT || 3000;
-server.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-});
+    notifier.notify({
+        title: 'Alerte de fréquence cardiaque',
+        message: message,
+        sound: true,
+        wait: true
+    });
+}; 

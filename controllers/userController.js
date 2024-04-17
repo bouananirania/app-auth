@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
 
 exports.registerUser = async (req, res) => {
     try {
@@ -46,7 +45,7 @@ exports.loginUser = async (req, res) => {
 
 exports.getuserdata=async(req,res)=>{
     try {
-    const {userId}=req.params.userId;
+    const {userId}=req.body;
     /*if (!userId) {
         return res.status(400).json({ status: false, message: "L'identifiant de l'utilisateur est manquant dans la requête." });
     }
@@ -59,18 +58,14 @@ exports.getuserdata=async(req,res)=>{
   }};
   exports.updateUser = async (req, res) => {
     try {
-      const userId = req.params.userId;
+      const userId = req.body;
       const updatedUserData = req.body;
       const updatedUser = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
       if (!updatedUser) {
-          // Si l'utilisateur n'est pas trouvé, renvoyer une réponse 404
           return res.status(404).json({ success: false, message: 'Utilisateur non trouvé' });
         }
-    
-        // Renvoyer l'utilisateur mis à jour en réponse
-        res.json({ success: true, user: updatedUser });
+            res.json({ success: true, user: updatedUser });
       } catch (err) {
-        // Gérer les erreurs
         console.error(err);
         res.status(500).json({ success: false, message: 'Erreur lors de la mise à jour de l\'utilisateur' });
       }

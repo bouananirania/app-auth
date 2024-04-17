@@ -2,9 +2,9 @@ const user = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bpmg= require('../models/user');
 class serviceuser{
-    static async getdata(userId){
+    static async getdata(_id){
         try{
-        const data=await user.find({userId})
+        const data=await user.find({_id});
         return data;
   
         }catch(err){console.log(err)}

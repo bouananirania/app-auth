@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     details: { type: String },
     maladie : { type: String, required: true },
     gender :  { type: String, required: true },
-    idDoctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
+    //idDoctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
     createdat: {
         type: Date,
         default: Date.now 

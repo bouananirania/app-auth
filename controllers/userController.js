@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const userserv = require("../services/usersrvc");
 exports.registerUser = async (req, res) => {
     try {
-        const { fullName, email, idPulse, age, bloodType, wilaya, password, confirmPassword } = req.body;
+        const{ fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,confirmPassword,details,maladie,gender } = req.body;
         
         if (password !== confirmPassword) {
             return res.status(400).send("Les mots de passe ne correspondent pas");
@@ -14,8 +14,7 @@ exports.registerUser = async (req, res) => {
             return res.status(400).send("L'utilisateur existe déjà");
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const hashedconfirmPassword = await bcrypt.hash(confirmPassword, 10);
-        const newUser = new User({ fullName, email, idPulse, dateOfBirth, bloodType, wilaya, hashedPassword, hashedconfirmPassword });
+        const newUser = new User({ fullName, email, idPulse, dateOfBirth, bloodType, wilaya, hashedPassword ,details,maladie,gender});
         await newUser.save();
         res.status(201).send("Inscription réussie");
     } catch (err) {

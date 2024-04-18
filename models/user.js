@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     bloodType: { type: String, required: true },
     wilaya: { type: String, required: true },
     password: { type: String, required: true },
-    confirmPassword:{ type: String, required: true },
+    confirmPassword:{ type: String },
     details: { type: String },
     maladie : { type: String, required: true },
     gender :  { type: String, required: true },

@@ -3,6 +3,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const userRoutes = require("./routes/userRoutes");
 const measurementRoutes = require("./routes/measurementRoutes");
+const adviceroutes = require("./routes/adviceRoutes");
 
 
 const app = express();
@@ -14,7 +15,8 @@ app.use(express.urlencoded({extended:true}));
 
 app.use("/users", userRoutes);
 app.use("/bpm",measurementRoutes);
-// Écoute des nouvelles connexions Socket.IO
+app.use("/ad",adviceroutes);
+
 io.on('connection', (socket) => {
   console.log('Nouvelle connexion Socket.IO :', socket.id);
   measurementController.sendLatestBpmToClient(io);

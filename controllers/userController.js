@@ -16,7 +16,9 @@ exports.registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, hashedPassword,details,maladie,gender });
         await newUser.save();
-        res.status(201).send("Inscription réussie");
+        let tokendata ={id:newUser._id,email:newUser.email,fullName:newUser.fullName,password:newUser.password,age:newUser.age};
+        var token =await userserv.generatetoken(tokendata,'secretKey',"4h");
+        res.json({status:true,success:newUser,token:token});
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -35,8 +37,9 @@ exports.loginUser = async (req, res) => {
         if (!passwordMatch) {
             return res.status(400).send("Mot de passe incorrect");
         }
-        
-        res.status(200).send("Connecté avec succès");
+        let tokendata ={id:newUser._id,email:newUser.email,fullName:newUser.fullName,password:newUser.password,age:newUser.age};
+        var token =await userserv.generatetoken(tokendata,'secretKey',"4h");
+        res.json({status:true,token:token});
     } catch (err) {
         res.status(500).send({ message: err.message });
     }

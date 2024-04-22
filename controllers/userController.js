@@ -61,8 +61,8 @@ exports.getuserdata=async(req,res)=>{
   exports.updateUser = async (req, res) => {
     try {
       const userId = req.body;
-      const updatedUserData = req.body;
-      const updatedUser = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
+      const { fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,confirmPassword,details,maladie,gender } = req.body;
+      const updatedUser = await User.findByIdAndUpdate(userId, { fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,confirmPassword,details,maladie,gender }, { new: true });
       if (!updatedUser) {
           return res.status(404).json({ success: false, message: 'Utilisateur non trouvé' });
         }

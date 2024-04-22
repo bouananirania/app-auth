@@ -14,7 +14,8 @@ exports.registerUser = async (req, res) => {
             return res.status(400).send("L'utilisateur existe déjà");
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, hashedPassword,details,maladie,gender });
+        password=hashedPassword;
+        const newUser = new User({ fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,details,maladie,gender });
         await newUser.save();
         let tokendata ={id:newUser._id,email:newUser.email,fullName:newUser.fullName,password:newUser.password,age:newUser.age};
         var token =await userserv.generatetoken(tokendata,'secretKey',"4h");

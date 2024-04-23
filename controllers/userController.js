@@ -60,9 +60,11 @@ exports.getuserdata=async(req,res)=>{
   }};
   exports.updateUser = async (req, res) => {
     try {
-      const userId = req.body;
-      const { fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,confirmPassword,details,maladie,gender } = req.body;
-      const updatedUser = await User.findByIdAndUpdate(userId, { fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,confirmPassword,details,maladie,gender }, { new: true });
+      const userId = req.body.userId;
+      const { fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,details,maladie,gender } = req.body;
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        req.body.password = hashedPassword;
+      const updatedUser = await User.findByIdAndUpdate(userId, { fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password: hashedPassword,details,maladie,gender }, { new: true });
       if (!updatedUser) {
           return res.status(404).json({ success: false, message: 'Utilisateur non trouvé' });
         }

@@ -37,7 +37,7 @@ exports.loginUser = async (req, res) => {
         if (!passwordMatch) {
             return res.status(400).send("Mot de passe incorrect");
         }
-        let tokendata ={id:newUser._id,email:newUser.email,fullName:newUser.fullName,password:newUser.password,age:newUser.age};
+        let tokendata ={id:user._id,email:user.email,fullName:user.fullName,password:user.password,age:user.age};
         var token =await userserv.generatetoken(tokendata,'secretKey',"4h");
         res.json({status:true,token:token});
     } catch (err) {

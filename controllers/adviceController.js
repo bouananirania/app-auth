@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Advice = require('../models/advice');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 exports.advice= async (req, res) => {
     try {

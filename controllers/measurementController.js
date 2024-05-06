@@ -14,7 +14,7 @@ exports.sendLatestBpmToClient = async (req, res) => {
           const data = JSON.stringify({ idPulse, bpm });
           res.write(`data: ${data}\n\n`);
           await checkAndSendNotifications(idPulse, bpm);
-          await bpm.findByIdAndDelete(latestBpmEntry._id);
+          //await bpm.findByIdAndDelete(latestBpmEntry._id);
       } else {
           res.write('data: No data available\n\n'); // Envoyer une réponse même si aucune donnée n'est trouvée
       }

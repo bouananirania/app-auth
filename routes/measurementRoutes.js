@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const measurementController = require('../controllers/measurementController');
 
-router.get('/bpm', (req, res) => {
+router.get('/bpm/:userId', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');

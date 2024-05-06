@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const adviceController = require('../controllers/adviceController');
 
-router.get('/message', (req, res) => {
+router.get('/message/:userId', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');

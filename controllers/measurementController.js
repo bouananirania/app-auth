@@ -1,7 +1,7 @@
 
 const User = require('../models/user');
 const userserv =require('../services/usersrvc');
-const { patientDB } = require('../config/db');
+const bpm= require('../models/user');
 const notifier = require('node-notifier');
 
 exports.sendLatestBpmToClient = async (req, res) => {

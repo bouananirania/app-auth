@@ -27,7 +27,7 @@ exports.advice= async (req, res) => {
     const userId = req.params.userId; 
     try {
       const lastAdvice = await Advice.findOne({ userId: userId }).sort({ timestamp: -1 });
-      if (latestBpmEntry){
+      if (lastAdvice){
         res.write(`Message : ${lastAdvice}\n\n`);
         await Advice.findByIdAndDelete(lastAdvice._id);
       }

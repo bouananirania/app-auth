@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
 const userserv = require("../services/usersrvc");
-const bpm= require('../models/user');
+const bpm= require('../models/bpm');
 
 exports.registerUser = async (req, res) => {
     try {

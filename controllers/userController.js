@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
 const userserv = require("../services/usersrvc");
+const bpm= require('../models/user');
+
 exports.registerUser = async (req, res) => {
     try {
         const{ fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password,confirmPassword,details,maladie,gender } = req.body;
@@ -16,9 +18,11 @@ exports.registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ fullName, email, idPulse, age, PhoneNumber, bloodType, wilaya, password: hashedPassword,details,maladie,gender });
         await newUser.save();
-        let tokendata ={id:newUser._id,email:newUser.email,fullName:newUser.fullName,password:newUser.password,age:newUser.age};
-        var token =await userserv.generatetoken(tokendata,'secretKey',"4h");
-        res.json({status:true,success:newUser,token:token});
+        const newbpm = new bpm({userId: savedUser._id, idPulse  });
+        await newbpm.save();
+        /*let tokendata ={id:newUser._id,email:newUser.email,fullName:newUser.fullName,password:newUser.password,age:newUser.age};
+        var token =await userserv.generatetoken(tokendata,'secretKey',"4h");*/
+        res.json({status:true,success:newUser});
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -48,10 +52,6 @@ exports.loginUser = async (req, res) => {
 exports.getuserdata=async(req,res)=>{
     try {
     const {userId}=req.body;
-    /*if (!userId) {
-        return res.status(400).json({ status: false, message: "L'identifiant de l'utilisateur est manquant dans la requête." });
-    }
-    */
     const userData = await userserv.getdata(userId); 
     res.json({ status: true, success: userData });
       } catch (err) {

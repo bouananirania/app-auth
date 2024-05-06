@@ -9,13 +9,6 @@ class serviceuser{
   
         }catch(err){console.log(err)}
       }
-    static async getbpm(Bpm,pulseid){
-        try{
-        const bpmg=new user({Bpm,idPulse})
-        return await bpmg.save();
-           }catch(err){console.log(err)}
-      }
-
       static async findUserByIdPulse(idPulse){
         try {
             const userinfo = await user.findOne({ idPulse });

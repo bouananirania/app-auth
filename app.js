@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.use("/users", userRoutes);
-app.use("/bpm",measurementRoutes);
+app.use("/measurement",measurementRoutes);
 app.use("/ad",adviceroutes);
 
 io.on('connection', (socket) => {

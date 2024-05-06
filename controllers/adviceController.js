@@ -29,7 +29,7 @@ exports.advice= async (req, res) => {
       const lastAdvice = await Advice.findOne({ userId: userId }).sort({ timestamp: -1 });
       if (lastAdvice){
         res.write(`Message : ${lastAdvice}\n\n`);
-        await Advice.findByIdAndDelete(lastAdvice._id);
+        //await Advice.findByIdAndDelete(lastAdvice._id);
       }
       else {
         res.write(`Pas de Message pour le moment \n\n`);

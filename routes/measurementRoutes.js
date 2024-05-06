@@ -1,11 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const measurementController = require('../controllers/measurementController');
-const { server } = require('../config/socketConfig'); 
 
-router.get('/latestBpm', (req, res) => {
-  measurementController.sendLatestBpmToClient(server.io); 
-  res.sendStatus(200);
+router.get('/bpm', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  const intervalId = setInterval(() => {
+    measurementController.sendLatestBpmToClient(req, res);
+  }, 5000);
+
+  req.on('close', () => {
+      clearInterval(intervalId);
+      res.end();
+  });
 });
-
 module.exports = router;
